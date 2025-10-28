@@ -1,8 +1,12 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const PORT = process.env.PORT || 3000;
+
+// Simple in-memory storage (replace with proper DB in production)
+const users = [];
 
 // In-memory demo data (can be moved to a separate file)
 let services = [
@@ -49,6 +53,23 @@ function send404(req, res){
   res.end('Not found');
 }
 
+// Password hashing
+function hashPassword(password, salt = crypto.randomBytes(16).toString('hex')) {
+  const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
+  return { hash, salt };
+}
+
+function verifyPassword(password, hash, salt) {
+  const verifyHash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
+  return verifyHash === hash;
+}
+
+// Generate JWT token (very basic implementation - use proper JWT library in production)
+function generateToken(user) {
+  const payload = { id: user.id, email: user.email };
+  return Buffer.from(JSON.stringify(payload)).toString('base64');
+}
+
 const server = http.createServer((req, res) => {
   const { method, url } = req;
   const parsedUrl = new URL(url, `http://${req.headers.host}`);
@@ -68,6 +89,58 @@ const server = http.createServer((req, res) => {
 
     if (method === 'GET' && pathname === '/api/appointments'){
       return sendJSON(res, 200, { appointments: bookings });
+    }
+
+    if (method === 'POST' && pathname === '/api/register'){
+      let body = '';
+      req.on('data', chunk => body += chunk);
+      req.on('end', () => {
+        try {
+          const data = JSON.parse(body);
+          
+          // Basic validation
+          if (!data.email || !data.password || !data.fullName || !data.phone) {
+            return sendJSON(res, 400, { error: 'All fields are required' });
+          }
+          
+          // Check if email exists
+          if (users.find(u => u.email === data.email)) {
+            return sendJSON(res, 400, { error: 'Email already registered' });
+          }
+          
+          // Hash password
+          const { hash, salt } = hashPassword(data.password);
+          
+          // Create user
+          const user = {
+            id: users.length + 1,
+            email: data.email,
+            fullName: data.fullName,
+            phone: data.phone,
+            passwordHash: hash,
+            passwordSalt: salt,
+            createdAt: new Date().toISOString()
+          };
+          
+          users.push(user);
+          
+          // Generate token
+          const token = generateToken(user);
+          
+          return sendJSON(res, 201, {
+            message: 'Registration successful',
+            token,
+            user: {
+              id: user.id,
+              email: user.email,
+              fullName: user.fullName
+            }
+          });
+        } catch (e) {
+          return sendJSON(res, 400, { error: 'Invalid request format' });
+        }
+      });
+      return;
     }
 
     if (method === 'POST' && pathname === '/api/bookings'){

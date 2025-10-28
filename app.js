@@ -5,8 +5,9 @@
   - Modify `services` array below to change sample data
 */
 
-// Sample data
-const services = [
+// Services will be loaded from the backend. Keep a local fallback dataset if the API is unavailable.
+let services = [];
+const DEFAULT_SERVICES = [
   {id:1, name:"Box Braids", duration:"2h 30m", desc:"Protective style • Medium length", price:120, tags:["braiding"], img:"https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=60" },
   {id:2, name:"Wig Installation", duration:"1h 30m", desc:"Lace melt • Custom fit", price:95, tags:["wig"], img:"https://images.unsplash.com/photo-1556228720-4cdbf0e0d7c4?auto=format&fit=crop&w=800&q=60" },
   {id:3, name:"Color & Gloss", duration:"2h", desc:"Ammonia-free • Shine boost", price:140, tags:["color"], img:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=60" },
@@ -17,6 +18,23 @@ const services = [
   {id:8, name:"Formal Updo", duration:"1h", desc:"Events • Weddings", price:100, tags:["styling"], img:"https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=60" },
   {id:9, name:"Lash Extensions", duration:"45m", desc:"Classic set • Natural look", price:110, tags:["beauty"], img:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=60" }
 ];
+
+async function loadServices(){
+  try{
+    const res = await fetch('/api/services');
+    if(!res.ok) throw new Error('Fetch failed');
+    const data = await res.json();
+    services = data.services || DEFAULT_SERVICES;
+  }catch(e){
+    services = DEFAULT_SERVICES;
+    showToast('Could not load services from API — using local data');
+  }
+
+  // render now that services are available
+  filterAndRender();
+  renderBookingServices();
+  renderDashboard();
+}
 
 // Currency formatter for Ghana Cedi
 function formatCurrency(amount){
@@ -150,7 +168,7 @@ hamburger.addEventListener('click', () => {
 });
 
 // Initialize
-filterAndRender();
+loadServices();
 
 /* ----------------------------
    Booking page logic
@@ -299,20 +317,57 @@ function updateSummary(){
   sumTotal.textContent = bookingState.service ? formatCurrency(bookingState.service.price) : formatCurrency(0);
 }
 
-// Confirm booking
-confirmBtn?.addEventListener('click', ()=>{
+// Confirm booking (POST to backend)
+confirmBtn?.addEventListener('click', async ()=>{
   if(!bookingState.service || !bookingState.date || !bookingState.time){
     showToast('Please select a service, date and time before confirming.');
     return;
   }
-  showToast(`Booked: ${bookingState.service.name} on ${bookingState.date.toLocaleDateString()} at ${bookingState.time}`);
-  // reset simplified booking
-  bookingState.service = null; bookingState.date=null; bookingState.time=null; bookingState.stylist=null;
-  renderBookingServices(); renderDates(); renderStylists(); updateSummary();
+
+  const payload = {
+    serviceId: bookingState.service.id,
+    date: bookingState.date.toISOString(),
+    time: bookingState.time,
+    stylist: bookingState.stylist ? bookingState.stylist.name : null
+  };
+
+  try{
+    const res = await fetch('/api/bookings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if(!res.ok){
+      const err = await res.json().catch(()=>({error: 'unknown'}));
+      showToast(`Booking failed: ${err.error || res.statusText}`);
+      return;
+    }
+    const created = await res.json();
+
+    // Mirror to UI appointments list (in-memory)
+    appointments.unshift({
+      id: created.id || Date.now(),
+      date: created.date,
+      service: created.serviceName || bookingState.service.name,
+      stylist: created.stylist || bookingState.stylist?.name || 'No preference',
+      duration: bookingState.service.duration,
+      status: 'confirmed'
+    });
+
+    showToast(`Booked: ${bookingState.service.name} on ${bookingState.date.toLocaleDateString()} at ${bookingState.time}`);
+
+    // reset simplified booking
+    bookingState.service = null; bookingState.date=null; bookingState.time=null; bookingState.stylist=null;
+    renderBookingServices(); renderDates(); renderStylists(); updateSummary(); renderAppointments(); renderDashboard();
+
+  }catch(err){
+    console.error(err);
+    showToast('Booking error — please try again');
+  }
 });
 
-// Initialize booking UI
-renderBookingServices(); renderDates(); renderStylists(); updateSummary();
+// Initialize booking UI (booking services will be rendered after services load)
+renderDates(); renderStylists(); updateSummary();
 
 /* ----------------------------
    Dashboard logic
@@ -357,8 +412,6 @@ function renderDashboard(){
     });
   }
 }
-
-renderDashboard();
 
 /* ----------------------------
    Appointments logic

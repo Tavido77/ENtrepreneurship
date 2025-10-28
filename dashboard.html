@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard — Glow & Grace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Sidebar (collapses on mobile) -->
+  <aside class="sidebar" aria-label="Primary navigation">
+    <div class="brand">
+      <div class="logo">G&G</div>
+      <div class="brand-text">Regal Glit Glam</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="booking.html">Booking</a></li>
+        <li><a href="appointments.html">Appointments</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="dashboard.html" class="active">Dashboard</a></li>
+      </ul>
+    </nav>
+    <button class="sidebar-cta" aria-label="Open booking">Book Appointment</button>
+  </aside>
+
+  <!-- Top hamburger for mobile -->
+  <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+    ☰
+  </button>
+
+  <div class="main-area">
+    <header class="topbar">
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="Search services, styles, or technicians" aria-label="Search services">
+      </div>
+      <div class="top-actions">
+        <button class="login" aria-label="Login">Login</button>
+        <button class="avatar" aria-label="User menu">A</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Dashboard page -->
+      <section class="dashboard-page">
+        <header class="page-header">
+          <h2>Admin Dashboard</h2>
+          <p class="muted">Business overview and performance</p>
+        </header>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-label">Total sales</div>
+            <div class="stat-value" id="stat-sales">₵48,320</div>
+            <div class="stat-delta">+12%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Bookings this week</div>
+            <div class="stat-value" id="stat-bookings">186</div>
+            <div class="stat-delta">+8%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg. order value</div>
+            <div class="stat-value" id="stat-average">₵62</div>
+            <div class="stat-delta">+3%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Returning clients</div>
+            <div class="stat-value" id="stat-returning">62%</div>
+            <div class="stat-delta">+5%</div>
+          </div>
+        </div>
+
+        <div class="charts-row">
+          <div class="chart-large">Line chart placeholder</div>
+          <div class="chart-small">Pie chart placeholder</div>
+        </div>
+
+        <section class="popular-services">
+          <h3>Most popular services</h3>
+          <div class="popular-list" id="popular-list">
+            <!-- rendered by JS -->
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>%TITLE% — Glow & Grace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Sidebar (collapses on mobile) -->
+  <aside class="sidebar" aria-label="Primary navigation">
+    <div class="brand">
+      <div class="logo">G&G</div>
+      <div class="brand-text">Regal Glit Glam</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="booking.html">Booking</a></li>
+        <li><a href="appointments.html">Appointments</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+      </ul>
+    </nav>
+    <button class="sidebar-cta" aria-label="Open booking">Book Appointment</button>
+  </aside>
+
+  <!-- Top hamburger for mobile -->
+  <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+    ☰
+  </button>
+
+  <div class="main-area">
+    <header class="topbar">
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="Search services, styles, or technicians" aria-label="Search services">
+      </div>
+      <div class="top-actions">
+        <button class="login" aria-label="Login">Login</button>
+        <button class="avatar" aria-label="User menu">A</button>
+      </div>
+    </header>
+
+    <main>
+      %CONTENT%
+    </main>
+  </div>
+
+  <!-- Toast / Modal for booking confirmation -->
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="app.js" defer></script>
+  %EXTRA_SCRIPTS%
+</body>
+</html>
