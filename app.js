@@ -167,6 +167,95 @@ hamburger.addEventListener('click', () => {
   hamburger.setAttribute('aria-expanded', String(open));
 });
 
+// Authentication utilities
+function isLoggedIn() {
+  return !!localStorage.getItem('token');
+}
+
+function isAdmin() {
+  const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+  return userData.role === 'admin';
+}
+
+function checkAuth() {
+  // Check if we're on dashboard page
+  if (window.location.pathname.includes('dashboard.html')) {
+    if (!isLoggedIn() || !isAdmin()) {
+      window.location.href = 'index.html';
+      return false;
+    }
+  }
+  
+  // Update UI based on auth state
+  updateAuthUI();
+  return true;
+}
+
+function updateAuthUI() {
+  const isAuthed = isLoggedIn();
+  const adminUser = isAdmin();
+  
+  // Update login/avatar buttons
+  document.querySelectorAll('.login').forEach(btn => {
+    btn.style.display = isAuthed ? 'none' : 'block';
+  });
+  
+  document.querySelectorAll('.avatar').forEach(btn => {
+    btn.style.display = isAuthed ? 'block' : 'none';
+  });
+
+  // Show/hide dashboard link based on admin status
+  document.querySelectorAll('nav a[href="dashboard.html"]').forEach(link => {
+    link.style.display = adminUser ? 'block' : 'none';
+  });
+}
+
+// Add event listeners for global navigation elements
+document.addEventListener('DOMContentLoaded', () => {
+  // Check auth state on every page load
+  if (!checkAuth()) return;
+
+  // Book Appointment buttons
+  const bookButtons = document.querySelectorAll('.sidebar-cta, [data-action="book"]');
+  bookButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!isLoggedIn()) {
+        window.location.href = 'login.html';
+        return;
+      }
+      window.location.href = 'booking.html';
+    });
+  });
+
+  // View Services buttons
+  const viewServicesButtons = document.querySelectorAll('[data-action="view-services"]');
+  viewServicesButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      window.location.href = 'services.html';
+    });
+  });
+
+  // Login/Profile buttons
+  const loginButtons = document.querySelectorAll('.login, [data-action="login"]');
+  loginButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (isLoggedIn()) {
+        window.location.href = 'appointments.html';
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
+  });
+
+  // Avatar dropdown for logged-in users
+  const avatarButtons = document.querySelectorAll('.avatar');
+  avatarButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      window.location.href = 'appointments.html';
+    });
+  });
+});
+
 // Initialize
 loadServices();
 

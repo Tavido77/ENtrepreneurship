@@ -66,8 +66,27 @@ function verifyPassword(password, hash, salt) {
 
 // Generate JWT token (very basic implementation - use proper JWT library in production)
 function generateToken(user) {
-  const payload = { id: user.id, email: user.email };
+  const payload = { 
+    id: user.id, 
+    email: user.email,
+    role: user.role || 'customer'
+  };
   return Buffer.from(JSON.stringify(payload)).toString('base64');
+}
+
+// Create admin user if none exists
+if (!users.find(u => u.role === 'admin')) {
+  const { hash, salt } = hashPassword('admin123'); // Default admin password
+  users.push({
+    id: users.length + 1,
+    email: 'admin@glowandgrace.com',
+    fullName: 'Admin User',
+    phone: '0000000000',
+    passwordHash: hash,
+    passwordSalt: salt,
+    role: 'admin',
+    createdAt: new Date().toISOString()
+  });
 }
 
 const server = http.createServer((req, res) => {
@@ -91,7 +110,7 @@ const server = http.createServer((req, res) => {
       return sendJSON(res, 200, { appointments: bookings });
     }
 
-    if (method === 'POST' && pathname === '/api/register'){
+    if (method === 'POST' && pathname === '/api/register') {
       let body = '';
       req.on('data', chunk => body += chunk);
       req.on('end', () => {
@@ -111,7 +130,7 @@ const server = http.createServer((req, res) => {
           // Hash password
           const { hash, salt } = hashPassword(data.password);
           
-          // Create user
+          // Create user (always as customer)
           const user = {
             id: users.length + 1,
             email: data.email,
@@ -119,6 +138,7 @@ const server = http.createServer((req, res) => {
             phone: data.phone,
             passwordHash: hash,
             passwordSalt: salt,
+            role: 'customer', // Default role
             createdAt: new Date().toISOString()
           };
           
@@ -133,7 +153,8 @@ const server = http.createServer((req, res) => {
             user: {
               id: user.id,
               email: user.email,
-              fullName: user.fullName
+              fullName: user.fullName,
+              role: user.role
             }
           });
         } catch (e) {
@@ -143,7 +164,47 @@ const server = http.createServer((req, res) => {
       return;
     }
 
-    if (method === 'POST' && pathname === '/api/bookings'){
+    if (method === 'POST' && pathname === '/api/login') {
+      let body = '';
+      req.on('data', chunk => body += chunk);
+      req.on('end', () => {
+        try {
+          const data = JSON.parse(body);
+          
+          // Basic validation
+          if (!data.email || !data.password) {
+            return sendJSON(res, 400, { error: 'Email and password are required' });
+          }
+          
+          // Find user
+          const user = users.find(u => u.email === data.email);
+          if (!user) {
+            return sendJSON(res, 401, { message: 'Invalid email or password' });
+          }
+          
+          // Verify password
+          if (!verifyPassword(data.password, user.passwordHash, user.passwordSalt)) {
+            return sendJSON(res, 401, { message: 'Invalid email or password' });
+          }
+          
+          // Generate token
+          const token = generateToken(user);
+          
+          return sendJSON(res, 200, {
+            message: 'Login successful',
+            token,
+            email: user.email,
+            fullName: user.fullName,
+            role: user.role
+          });
+        } catch (e) {
+          return sendJSON(res, 400, { error: 'Invalid request format' });
+        }
+      });
+      return;
+    }
+
+    if (method === 'POST' && pathname === '/api/bookings') {
       let body = '';
       req.on('data', chunk => body += chunk);
       req.on('end', () => {
