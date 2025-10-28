@@ -1,0 +1,11 @@
+{
+  "name": "service-catalog-backend",
+  "version": "1.0.0",
+  "description": "Lightweight Node.js backend for the Service Catalog SPA (serves static files + JSON API)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "MIT"
+}

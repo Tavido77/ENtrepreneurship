@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Service Catalog — Glow & Grace</title>
+  <!-- Google Font: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Sidebar (collapses on mobile) -->
+  <aside class="sidebar" aria-label="Primary navigation">
+    <div class="brand">
+      <div class="logo">G&G</div>
+      <div class="brand-text">Regal Glit Glam</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#services" class="active">Services</a></li>
+  <li><a href="#booking">Booking</a></li>
+  <li><a href="#appointments">Appointments</a></li>
+  <li><a href="#contact">Contact</a></li>
+  <li><a href="#dashboard">Dashboard</a></li>
+      </ul>
+    </nav>
+    <button class="sidebar-cta" aria-label="Open booking">Book Appointment</button>
+  </aside>
+
+  <!-- Top hamburger for mobile -->
+  <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+    ☰
+  </button>
+
+  <div class="main-area">
+    <header class="topbar">
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="Search services, styles, or technicians" aria-label="Search services">
+      </div>
+      <div class="top-actions">
+        <button class="login" aria-label="Login">Login</button>
+        <button class="avatar" aria-label="User menu">A</button>
+      </div>
+    </header>
+
+    <main>
+
+      <!-- Home (landing) -->
+      <section id="home" class="hero-banner">
+        <div class="hero-image" role="img" aria-label="Styling in salon">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1600&q=60" alt="Salon styling">
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <span class="hero-pill">Luxury hair care for women</span>
+            <h2 class="hero-title">Shine Brighter with Regal Glit Glam</h2>
+            <p class="hero-lead">Experience premium, feminine styles with expert stylists. Book your service, book your stylist, and enjoy exclusive promos & events.</p>
+            <div class="hero-actions">
+              <button class="btn primary" id="hero-book">Book Appointment</button>
+              <button class="btn outline" id="hero-view">View Services</button>
+              <button class="btn ghost" id="hero-login">Login</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+  <!-- Features still in Home -->
+  <section class="features">
+        <h3>Why Choose Regal Glit Glam</h3>
+        <p class="muted">Effortless booking, expert stylists, and premium treatments in a serene, welcoming space.</p>
+        <div class="feature-list">
+          <div class="feature-card">
+            <div class="icon">✂️</div>
+            <h4>Expert Stylists</h4>
+            <p class="muted">From precision cuts to balayage, we have handcrafted styles for you.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">📅</div>
+            <h4>Easy Booking</h4>
+            <p class="muted">Choose your stylist, date, and time in seconds.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">💝</div>
+            <h4>Exclusive Offers</h4>
+            <p class="muted">Members enjoy seasonal packages and new-client perks.</p>
+          </div>
+        </div>
+      </section>
+
+  <!-- Testimonials still in Home -->
+  <section class="testimonials" aria-label="Client testimonials">
+        <h3>What Our Clients Say</h3>
+        <div class="testimonial-track" id="testimonial-track">
+          <button class="t-btn prev" id="t-prev" aria-label="Previous">‹</button>
+          <div class="t-list">
+            <blockquote class="t-card">
+              <strong>Chloe</strong>
+              <p class="muted">Best salon experience I've had. The stylist understood exactly what I wanted and the result was stunning.</p>
+            </blockquote>
+            <blockquote class="t-card">
+              <strong>Maya</strong>
+              <p class="muted">My color looks so natural and glossy — booking was so easy and the ambiance is gorgeous.</p>
+            </blockquote>
+            <blockquote class="t-card">
+              <strong>Luna</strong>
+              <p class="muted">My skin feels refreshed and radiant. The team is attentive and so professional.</p>
+            </blockquote>
+          </div>
+          <button class="t-btn next" id="t-next" aria-label="Next">›</button>
+        </div>
+      </section>
+
+  <!-- Follow still in Home -->
+  <section class="follow">
+        <h3>Follow Our Glam</h3>
+        <p class="muted">See styles, tutorials, and offers on your favorite platforms.</p>
+        <div class="socials">
+          <a href="#" aria-label="Facebook" class="social">Facebook</a>
+          <a href="#" aria-label="Instagram" class="social">Instagram</a>
+          <a href="#" aria-label="TikTok" class="social">TikTok</a>
+        </div>
+      </section>
+
+  <!-- Bottom CTA still in Home -->
+  <section class="bottom-cta">
+        <div class="cta-inner">
+          <div>
+            <h4>Ready to glow?</h4>
+            <p class="muted">Reserve your spot with our top stylists today.</p>
+          </div>
+          <div class="cta-actions">
+            <button class="btn primary" id="bottom-book">Book Appointment</button>
+            <button class="btn outline" id="bottom-view">View Services</button>
+          </div>
+        </div>
+      </section>
+
+  <!-- Services listing page -->
+      <section id="services" class="controls" aria-label="Filters and sorting">
+        <header class="page-header">
+          <h2>Services</h2>
+          <p class="muted">Discover our most-loved styles and treatments.</p>
+        </header>
+        <div class="chips" role="list">
+          <button class="chip" data-tag="braiding">Braiding</button>
+          <button class="chip" data-tag="wig">Wig Install</button>
+          <button class="chip" data-tag="color">Coloring</button>
+          <button class="chip" data-tag="manicure">Manicure</button>
+          <button class="chip clear" id="clear-filters">Clear filters</button>
+        </div>
+
+        <div class="controls-right">
+          <label class="select">
+            <select id="category-select" aria-label="Category select">
+              <option>All types</option>
+              <option>Braids</option>
+              <option>Wigs</option>
+              <option>Color</option>
+            </select>
+          </label>
+
+          <label class="select">
+            <select id="sort-select" aria-label="Sort services">
+              <option value="asc">Price: Low to High</option>
+              <option value="desc">Price: High to Low</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="grid" id="services-grid" aria-live="polite">
+        <!-- Cards rendered by JS -->
+      </section>
+      
+      <!-- Booking page -->
+      <section id="booking" class="booking-page">
+        <div class="booking-inner">
+          <div class="booking-left">
+            <h2>Book an Appointment</h2>
+            <p class="muted">Simple steps to reserve your time</p>
+
+            <div class="steps">
+              <div class="step-pill active">1 <span>Service</span></div>
+              <div class="step-pill">2 <span>Date</span></div>
+              <div class="step-pill">3 <span>Stylist</span></div>
+              <div class="step-pill">4 <span>Confirm</span></div>
+            </div>
+
+            <!-- Step 1: Select a service -->
+            <div class="booking-section">
+              <h3>Step 1 - Select a service</h3>
+              <div id="booking-services" class="booking-services">
+                <!-- rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Step 2: Date and time -->
+            <div class="booking-section">
+              <h3>Step 2 - Choose date and time</h3>
+              <div class="date-row">
+                <input type="month" id="booking-month" aria-label="Select month">
+              </div>
+              <div id="date-list" class="date-list">
+                <!-- days rendered here -->
+              </div>
+              <div id="time-slots" class="time-slots">
+                <!-- time slots rendered here -->
+              </div>
+            </div>
+
+            <!-- Step 2A: Busyness -->
+            <div class="booking-section">
+              <h4>Step 2A - Busyness</h4>
+              <div class="busyness">
+                <div class="busy-pill">Busyness</div>
+                <div class="busy-bar">
+              <div class="stat-value" id="stat-sales">₵48,320</div>
+                  <div class="bar-seg moderate"></div>
+                  <div class="bar-seg busy"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Stylists -->
+            <div class="booking-section">
+              <div class="stat-value" id="stat-average">₵62</div>
+              <div id="stylists" class="stylists-list">
+                <!-- stylists rendered here -->
+              </div>
+            </div>
+
+            <!-- Step 4: Payment -->
+            <div class="booking-section">
+              <h3>Step 4 - Payment</h3>
+              <div class="payment-options">
+                <label class="pay-option"><input type="radio" name="payment" value="salon" checked> Pay at salon</label>
+                <label class="pay-option"><input type="radio" name="payment" value="card"> Card on file</label>
+              </div>
+            </div>
+          </div>
+
+          <aside class="booking-right">
+            <div class="summary-card">
+              <div class="summary-head">
+                <h4>Your booking</h4>
+                <div class="mood">Calm</div>
+              </div>
+              <div class="summary-body">
+                <div><strong>Service</strong><div id="sum-service">—</div></div>
+                <div><strong>Duration</strong><div id="sum-duration">—</div></div>
+                <div><strong>Stylist</strong><div id="sum-stylist">No preference</div></div>
+                <div><strong>Date</strong><div id="sum-date">—</div></div>
+                <div><strong>Time</strong><div id="sum-time">—</div></div>
+                <div class="summary-total"><strong>Total:</strong> <span id="sum-total">$0.00</span></div>
+                  <div class="summary-total"><strong>Total:</strong> <span id="sum-total">₵0.00</span></div>
+                <button id="confirm-booking" class="btn primary">Confirm booking</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Contact page placeholder -->
+      <section id="contact" class="page-placeholder">
+        <h2>Contact</h2>
+        <p class="muted">Contact details, map, and hours go here.</p>
+      </section>
+      <!-- Appointments page -->
+      <section id="appointments" class="appointments-page">
+        <header class="page-header">
+          <h2>My Appointments</h2>
+          <p class="muted">Manage upcoming visits, review past sessions, and make changes easily.</p>
+        </header>
+
+        <div class="appt-filters">
+          <button class="chip">This month</button>
+          <button class="chip">All services</button>
+        </div>
+
+        <div class="appt-lists">
+          <div class="appt-column">
+            <h4>Upcoming</h4>
+            <div id="upcoming-list" class="appt-list">
+              <!-- upcoming appointments rendered here -->
+            </div>
+          </div>
+          <div class="appt-column">
+            <h4>Past</h4>
+            <div id="past-list" class="appt-list">
+              <!-- past appointments rendered here -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dashboard page -->
+      <section id="dashboard" class="dashboard-page">
+        <header class="page-header">
+          <h2>Admin Dashboard</h2>
+          <p class="muted">Business overview and performance</p>
+        </header>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-label">Total sales</div>
+            <div class="stat-value" id="stat-sales">$48,320</div>
+            <div class="stat-delta">+12%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Bookings this week</div>
+            <div class="stat-value" id="stat-bookings">186</div>
+            <div class="stat-delta">+8%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg. order value</div>
+            <div class="stat-value" id="stat-average">$62</div>
+            <div class="stat-delta">+3%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Returning clients</div>
+            <div class="stat-value" id="stat-returning">62%</div>
+            <div class="stat-delta">+5%</div>
+          </div>
+        </div>
+
+        <div class="charts-row">
+          <div class="chart-large">Line chart placeholder</div>
+          <div class="chart-small">Pie chart placeholder</div>
+        </div>
+
+        <section class="popular-services">
+          <h3>Most popular services</h3>
+          <div class="popular-list" id="popular-list">
+            <!-- rendered by JS -->
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <!-- Toast / Modal for booking confirmation -->
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
