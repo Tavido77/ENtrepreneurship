@@ -109,7 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     try {
-      const res = await fetch('/api/register', {
+      // Use PHP backend endpoint when served from Apache/XAMPP
+      const res = await fetch('/php/register.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -120,12 +121,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || 'Registration failed');
+        throw new Error(data.error || data.message || 'Registration failed');
       }
 
-      // Success - store token and redirect
-      localStorage.setItem('token', data.token);
-      window.location.href = 'index.html';
+      // Success - no token from PHP backend; redirect to login
+      alert(data.message || 'Registration successful');
+      window.location.href = 'login.html';
 
     } catch (err) {
       showError('email', err.message);
