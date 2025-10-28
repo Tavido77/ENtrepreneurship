@@ -6,6 +6,132 @@
   <title>My Appointments — Glow & Grace</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .appointments-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .filter-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      background: white;
+      cursor: pointer;
+    }
+
+    .appointments-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .appointments-section {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+    }
+
+    .appointment-card {
+      display: flex;
+      justify-content: space-between;
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .appointment-info {
+      flex: 1;
+    }
+
+    .appointment-date {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .appointment-service {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .appointment-stylist {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .appointment-duration {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .appointment-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-confirmed {
+      background: var(--success-light);
+      color: var(--success);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+    }
+
+    .btn-reschedule {
+      background: var(--warning-light);
+      color: var(--warning);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+    }
+
+    .btn-cancel {
+      background: var(--danger-light);
+      color: var(--danger);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+    }
+
+    .status-completed {
+      background: var(--success-light);
+      color: var(--success);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+    }
+
+    .status-cancelled {
+      background: var(--danger-light);
+      color: var(--danger);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+    }
+
+    .tip-text {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      text-align: right;
+      margin-bottom: 1rem;
+    }
+  </style>
 </head>
 <body>
   <!-- Sidebar (collapses on mobile) -->
@@ -45,32 +171,133 @@
 
     <main>
       <!-- Appointments page -->
-      <section class="appointments-page">
-        <header class="page-header">
-          <h2>My Appointments</h2>
-          <p class="muted">Manage upcoming visits, review past sessions, and make changes easily.</p>
-        </header>
-
-        <div class="appt-filters">
-          <button class="chip">This month</button>
-          <button class="chip">All services</button>
+      <div class="appointments-header">
+        <div>
+          <h1>My Appointments</h1>
+          <p class="text-muted">Manage upcoming visits, review past sessions, and make changes easily.</p>
         </div>
+        <div class="header-actions">
+          <button class="btn-secondary">Profile</button>
+          <button class="btn-primary">Appoint</button>
+        </div>
+      </div>
 
-        <div class="appt-lists">
-          <div class="appt-column">
-            <h4>Upcoming</h4>
-            <div id="upcoming-list" class="appt-list">
-              <!-- upcoming appointments rendered here -->
+      <div class="filter-bar">
+        <button class="filter-button">
+          <span class="icon">📅</span>
+          This month
+        </button>
+        <button class="filter-button">
+          <span class="icon">✨</span>
+          All services
+        </button>
+      </div>
+
+      <p class="tip-text">Tip: You can reschedule up to 12 hours before your appointment</p>
+
+      <div class="appointments-grid">
+        <!-- Upcoming appointments -->
+        <section class="appointments-section">
+          <h2>Upcoming <span class="count">3</span></h2>
+          
+          <div class="appointment-card">
+            <div class="appointment-info">
+              <div class="appointment-date">Nov 28, 10:30</div>
+              <div class="appointment-service">Balayage & Style</div>
+              <div class="appointment-stylist">with Amelia Hart</div>
+              <div class="appointment-duration">2h</div>
+            </div>
+            <div class="appointment-actions">
+              <button class="btn-confirmed">Confirmed</button>
+              <button class="btn-reschedule">Reschedule</button>
+              <button class="btn-cancel">Cancel</button>
             </div>
           </div>
-          <div class="appt-column">
-            <h4>Past</h4>
-            <div id="past-list" class="appt-list">
-              <!-- past appointments rendered here -->
+
+          <div class="appointment-card">
+            <div class="appointment-info">
+              <div class="appointment-date">Dec 03, 14:00</div>
+              <div class="appointment-service">Classic Manicure</div>
+              <div class="appointment-stylist">with Sophia Lane</div>
+              <div class="appointment-duration">45m</div>
+            </div>
+            <div class="appointment-actions">
+              <button class="btn-confirmed">Confirmed</button>
+              <button class="btn-reschedule">Reschedule</button>
+              <button class="btn-cancel">Cancel</button>
             </div>
           </div>
-        </div>
-      </section>
+
+          <div class="appointment-card">
+            <div class="appointment-info">
+              <div class="appointment-date">Dec 15, 09:15</div>
+              <div class="appointment-service">Hydrating Facial</div>
+              <div class="appointment-stylist">with Naomi Cruz</div>
+              <div class="appointment-duration">60m</div>
+            </div>
+            <div class="appointment-actions">
+              <button class="btn-confirmed">Confirmed</button>
+              <button class="btn-reschedule">Reschedule</button>
+              <button class="btn-cancel">Cancel</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Past appointments -->
+        <section class="appointments-section">
+          <h2>Past</h2>
+          
+          <div class="appointment-card">
+            <div class="appointment-info">
+              <div class="appointment-date">Nov 08, 12:00</div>
+              <div class="appointment-service">Keratin Treatment</div>
+              <div class="appointment-stylist">with Amelia Hart</div>
+              <div class="appointment-duration">1h 30m</div>
+            </div>
+            <div class="appointment-actions">
+              <span class="status-completed">Completed</span>
+            </div>
+          </div>
+
+          <div class="appointment-card">
+            <div class="appointment-info">
+              <div class="appointment-date">Oct 26, 16:00</div>
+              <div class="appointment-service">Gel Pedicure</div>
+              <div class="appointment-stylist">with Sophia Lane</div>
+              <div class="appointment-duration">60m</div>
+            </div>
+            <div class="appointment-actions">
+              <span class="status-completed">Completed</span>
+            </div>
+          </div>
+
+          <div class="appointment-card">
+            <div class="appointment-info">
+              <div class="appointment-date">Oct 10, 11:30</div>
+              <div class="appointment-service">Root Touch-up</div>
+              <div class="appointment-stylist">with Amelia Hart</div>
+              <div class="appointment-duration">1h</div>
+            </div>
+            <div class="appointment-actions">
+              <span class="status-cancelled">Cancelled</span>
+            </div>
+          </div>
+
+          <div class="appointment-card">
+            <div class="appointment-info">
+              <div class="appointment-date">Sep 14, 09:00</div>
+              <div class="appointment-service">Signature Blowout</div>
+              <div class="appointment-stylist">with Naomi Cruz</div>
+              <div class="appointment-duration">45m</div>
+            </div>
+            <div class="appointment-actions">
+              <span class="status-completed">Completed</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <p class="text-muted text-center mt-4">Looking for older records? View more in Settings → History</p>
     </main>
   </div>
 
