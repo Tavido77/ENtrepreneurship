@@ -1,6 +1,8 @@
 // Client-side validation and API integration for registration
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('register-form');
+  // Disable native browser validation; we'll use custom validators to show friendly messages
+  form.setAttribute('novalidate', 'true');
   const inputs = {
     fullName: document.getElementById('fullName'),
     email: document.getElementById('email'),
@@ -46,11 +48,14 @@ document.addEventListener('DOMContentLoaded', () => {
       return null;
     },
     email: (value) => {
+      value = (value || '').trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Please enter a valid email address';
       return null;
     },
     phone: (value) => {
-      if (!/^\(\d{3}\)\s\d{3}-\d{4}$/.test(value)) return 'Please enter a valid phone number';
+      // Accept either formatted (123) 456-7890 or plain 10 digits
+      const digits = (value || '').replace(/\D/g, '');
+      if (!(/^\(\d{3}\)\s\d{3}-\d{4}$/.test(value) || /^\d{10}$/.test(digits))) return 'Please enter a valid phone number';
       return null;
     },
     password: (value) => {
