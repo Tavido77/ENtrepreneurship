@@ -32,7 +32,7 @@ if ($result && $result->num_rows > 0) {
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #fdf5f5;
+            background-color: #f5f2f2;
             color: #333;
             margin: 0;
             padding: 0;
@@ -40,7 +40,7 @@ if ($result && $result->num_rows > 0) {
 
         .sidebar {
             background-color: #fff;
-            border-right: 1px solid #eaeaea;
+            border-right: 1px solid #e1e1e1;
             padding: 20px;
         }
 
@@ -58,8 +58,8 @@ if ($result && $result->num_rows > 0) {
         }
 
         .sidebar ul li a.active {
-            background-color: #fce4ec;
-            color: #d81b60;
+            background-color: #fbecec;
+            color: #c2185b;
         }
 
         .main-area {
@@ -98,13 +98,13 @@ if ($result && $result->num_rows > 0) {
             text-align: center;
             padding: 10px;
             border-radius: 5px;
-            background-color: #fce4ec;
-            color: #d81b60;
+            background-color: #fbecec;
+            color: #c2185b;
             font-weight: bold;
         }
 
         .step-pill.active {
-            background-color: #d81b60;
+            background-color: #c2185b;
             color: #fff;
         }
 
@@ -114,7 +114,7 @@ if ($result && $result->num_rows > 0) {
 
         .booking-section h3 {
             margin-bottom: 10px;
-            color: #d81b60;
+            color: #c2185b;
         }
 
         .booking-services ul, .stylists-list ul {
@@ -124,7 +124,7 @@ if ($result && $result->num_rows > 0) {
 
         .booking-services ul li, .stylists-list ul li {
             padding: 10px;
-            border: 1px solid #eaeaea;
+            border: 1px solid #e1e1e1;
             border-radius: 5px;
             margin-bottom: 10px;
             display: flex;
@@ -141,11 +141,11 @@ if ($result && $result->num_rows > 0) {
 
         .summary-card h4 {
             margin-bottom: 10px;
-            color: #d81b60;
+            color: #c2185b;
         }
 
         .btn.primary {
-            background-color: #d81b60;
+            background-color: #c2185b;
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -154,7 +154,7 @@ if ($result && $result->num_rows > 0) {
         }
 
         .btn.primary:hover {
-            background-color: #c2185b;
+            background-color: #a8124b;
         }
     </style>
 </head>
