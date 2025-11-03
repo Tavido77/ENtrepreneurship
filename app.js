@@ -259,6 +259,11 @@ document.addEventListener('DOMContentLoaded', () => {
 // Initialize
 loadServices();
 
+document.addEventListener('DOMContentLoaded', function() {
+    renderDates();
+    renderBookingServices();
+});
+
 /* ----------------------------
    Booking page logic
    - Renders services (reusing `services` dataset)
@@ -316,7 +321,7 @@ function renderBookingServices(){
   });
 }
 
-// Mock dates: show next 7 days
+// Mock dates: show next 7 days with busyness
 function renderDates(){
   if(!dateListEl) return;
   dateListEl.innerHTML = '';
@@ -326,7 +331,9 @@ function renderDates(){
     const el = document.createElement('div');
     el.className = 'date-item';
     el.dataset.iso = d.toISOString();
-    el.innerHTML = `<div>${d.toLocaleString(undefined,{weekday:'short'})}</div><div style="font-weight:700">${d.getDate()}</div>`;
+    const busyness = Math.floor(Math.random() * 3); // Mock busyness level
+    const busynessClass = busyness === 0 ? 'free' : busyness === 1 ? 'moderate' : 'busy';
+    el.innerHTML = `<div>${d.toLocaleString(undefined,{weekday:'short'})}</div><div style="font-weight:700">${d.getDate()}</div><div class="busyness-indicator ${busynessClass}"></div>`;
     el.addEventListener('click', ()=>{
       document.querySelectorAll('.date-item').forEach(x=>x.classList.remove('active'));
       el.classList.add('active');
@@ -456,7 +463,7 @@ confirmBtn?.addEventListener('click', async ()=>{
 });
 
 // Initialize booking UI (booking services will be rendered after services load)
-renderDates(); renderStylists(); updateSummary();
+renderStylists(); updateSummary();
 
 /* ----------------------------
    Dashboard logic
