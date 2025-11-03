@@ -56,95 +56,62 @@ if ($result && $result->num_rows > 0) {
   </button>
 
   <div class="main-area">
-    <header class="topbar">
-      <div class="search-wrap">
-        <input id="search" type="search" placeholder="Search services, styles, or technicians" aria-label="Search services">
-      </div>
-      <div class="top-actions">
-        <button class="login" aria-label="Login">Login</button>
-        <button class="avatar" aria-label="User menu">A</button>
-      </div>
-    </header>
 
     <main>
-      <!-- Appointments page -->
-      <div class="appointments-header">
-        <div>
+      <div class="appointments-page">
+        <div class="header">
+          <input type="text" placeholder="Search appointments" class="search-bar">
           <h1>My Appointments</h1>
-          <p class="text-muted">Manage upcoming visits, review past sessions, and make changes easily.</p>
+          <p>Manage upcoming visits, review past sessions, and make changes easily.</p>
+          <div class="filters">
+            <button class="filter-btn active">This Month</button>
+            <button class="filter-btn">All Services</button>
+          </div>
         </div>
-        <div class="header-actions">
-          <button class="btn-secondary">Profile</button>
-          <button class="btn-primary">Appoint</button>
+        <div class="appointments-inner">
+          <div class="appointments-left">
+            <h2>Upcoming</h2>
+            <?php if (!empty($upcomingAppointments)): ?>
+              <?php foreach ($upcomingAppointments as $appointment): ?>
+                <div class="appointment-card">
+                  <div class="appointment-date"><?php echo htmlspecialchars($appointment['date'] . ', ' . $appointment['time']); ?></div>
+                  <div class="appointment-details">
+                    <strong><?php echo htmlspecialchars($appointment['service']); ?></strong>
+                    <p>with <?php echo htmlspecialchars($appointment['stylist']); ?> • <?php echo htmlspecialchars($appointment['duration']); ?> mins</p>
+                  </div>
+                  <div class="appointment-actions">
+                    <span class="badge confirmed">Confirmed</span>
+                    <button class="btn-reschedule">Reschedule</button>
+                    <button class="btn-cancel">Cancel</button>
+                  </div>
+                </div>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <p>No upcoming appointments.</p>
+            <?php endif; ?>
+          </div>
+          <div class="appointments-right">
+            <h2>Past</h2>
+            <?php if (!empty($pastAppointments)): ?>
+              <?php foreach ($pastAppointments as $appointment): ?>
+                <div class="appointment-card">
+                  <div class="appointment-date"><?php echo htmlspecialchars($appointment['date'] . ', ' . $appointment['time']); ?></div>
+                  <div class="appointment-details">
+                    <strong><?php echo htmlspecialchars($appointment['service']); ?></strong>
+                    <p>with <?php echo htmlspecialchars($appointment['stylist']); ?> • <?php echo htmlspecialchars($appointment['duration']); ?> mins</p>
+                  </div>
+                  <div class="appointment-status <?php echo htmlspecialchars($appointment['status']); ?>"><?php echo htmlspecialchars($appointment['status']); ?></div>
+                </div>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <p>No past appointments.</p>
+            <?php endif; ?>
+          </div>
+        </div>
+        <div class="tip">
+          Tip: You can reschedule up to 12 hours before your appointment.
         </div>
       </div>
-
-      <div class="filter-bar">
-        <button class="filter-button">
-          <span class="icon">📅</span>
-          This month
-        </button>
-        <button class="filter-button">
-          <span class="icon">✨</span>
-          All services
-        </button>
-      </div>
-
-      <p class="tip-text">Tip: You can reschedule up to 12 hours before your appointment</p>
-
-      <div class="appointments-grid">
-        <!-- Upcoming appointments -->
-        <section class="appointments-section">
-          <h2>Upcoming</h2>
-          <?php if (!empty($upcomingAppointments)): ?>
-            <?php foreach ($upcomingAppointments as $appointment): ?>
-              <div class="appointment-card">
-                <div class="appointment-info">
-                  <div class="appointment-date"><?php echo htmlspecialchars($appointment['date'] . ', ' . $appointment['time']); ?></div>
-                  <div class="appointment-service"><?php echo htmlspecialchars($appointment['service']); ?></div>
-                  <div class="appointment-stylist">with <?php echo htmlspecialchars($appointment['stylist']); ?></div>
-                  <div class="appointment-duration"><?php echo htmlspecialchars($appointment['duration']); ?> mins</div>
-                </div>
-                <div class="appointment-actions">
-                  <button class="btn-confirmed">Confirmed</button>
-                  <button class="btn-reschedule">Reschedule</button>
-                  <button class="btn-cancel">Cancel</button>
-                </div>
-              </div>
-            <?php endforeach; ?>
-          <?php else: ?>
-            <p>No upcoming appointments.</p>
-          <?php endif; ?>
-        </section>
-
-        <!-- Past appointments -->
-        <section class="appointments-section">
-          <h2>Past</h2>
-          <?php if (!empty($pastAppointments)): ?>
-            <?php foreach ($pastAppointments as $appointment): ?>
-              <div class="appointment-card">
-                <div class="appointment-info">
-                  <div class="appointment-date"><?php echo htmlspecialchars($appointment['date'] . ', ' . $appointment['time']); ?></div>
-                  <div class="appointment-service"><?php echo htmlspecialchars($appointment['service']); ?></div>
-                  <div class="appointment-stylist">with <?php echo htmlspecialchars($appointment['stylist']); ?></div>
-                  <div class="appointment-duration"><?php echo htmlspecialchars($appointment['duration']); ?> mins</div>
-                </div>
-                <div class="appointment-actions">
-                  <?php if ($appointment['status'] === 'completed'): ?>
-                    <span class="status-completed">Completed</span>
-                  <?php elseif ($appointment['status'] === 'cancelled'): ?>
-                    <span class="status-cancelled">Cancelled</span>
-                  <?php endif; ?>
-                </div>
-              </div>
-            <?php endforeach; ?>
-          <?php else: ?>
-            <p>No past appointments.</p>
-          <?php endif; ?>
-        </section>
-      </div>
-
-      <p class="text-muted text-center mt-4">Looking for older records? View more in Settings → History</p>
     </main>
   </div>
 
