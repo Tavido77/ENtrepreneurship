@@ -1,4 +1,7 @@
 <?php
+// Start the session
+session_start();
+
 // Include the database connection
 include 'db_connect.php';
 
@@ -41,10 +44,14 @@ if ($result && $result->num_rows > 0) {
       <ul>
         <li><a href="index.php" class="active">Home</a></li>
         <li><a href="services.php">Services</a></li>
-        <li><a href="booking.php">Booking</a></li>
+        <?php if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'): ?>
+          <li><a href="booking.php">Booking</a></li>
+        <?php endif; ?>
         <li><a href="appointments.php">Appointments</a></li>
         <li><a href="contact.php">Contact</a></li>
-        <li><a href="dashboard.php">Dashboard</a></li>
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+          <li><a href="dashboard.php">Dashboard</a></li>
+        <?php endif; ?>
       </ul>
     </nav>
     <button class="sidebar-cta" aria-label="Open booking">Book Appointment</button>
@@ -75,11 +82,8 @@ if ($result && $result->num_rows > 0) {
           <div class="hero-content">
             <span class="hero-pill">Luxury hair care for women</span>
             <h2 class="hero-title">Shine Brighter with Regal Glit Glam</h2>
-            <p class="hero-lead">Experience premium, feminine styles with expert stylists. Book your service, book your stylist, and enjoy exclusive promos & events.</p>
             <div class="hero-actions">
-              <button class="btn primary" id="hero-book" data-action="book">Book Appointment</button>
-              <button class="btn outline" id="hero-view" data-action="view-services">View Services</button>
-              <button class="btn ghost" id="hero-login" data-action="login">Login</button>
+                 <button class="btn ghost" id="hero-login" data-action="login">Login</button>
             </div>
           </div>
         </div>
@@ -143,12 +147,14 @@ if ($result && $result->num_rows > 0) {
             <h4>Ready to glow?</h4>
             <p class="muted">Reserve your spot with our top stylists today.</p>
           </div>
-          <div class="cta-actions">
-            <button class="btn primary" id="bottom-book" data-action="book">Book Appointment</button>
-            <button class="btn outline" id="bottom-view" data-action="view-services">View Services</button>
-          </div>
-        </div>
+       </div>
       </section>
+
+      <!-- Date and Time Display -->
+      <div class="date-time">
+        <p id="current-date" class="date"></p>
+        <p id="current-time" class="time"></p>
+      </div>
     </main>
   </div>
 
@@ -156,5 +162,26 @@ if ($result && $result->num_rows > 0) {
   <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <script src="app.js" defer></script>
+  <script>
+    // Function to update the date and time in real-time
+    function updateDateTime() {
+      const now = new Date();
+
+      // Format the date as 'Day, Month Date, Year'
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const formattedDate = now.toLocaleDateString(undefined, options);
+
+      // Format the time as 'HH:MM:SS AM/PM'
+      const formattedTime = now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+
+      // Update the elements with the current date and time
+      document.getElementById('current-date').textContent = formattedDate;
+      document.getElementById('current-time').textContent = formattedTime;
+    }
+
+    // Call the function every second to keep the time updated
+    setInterval(updateDateTime, 1000);
+    updateDateTime(); // Initial call to set the time immediately
+  </script>
 </body>
 </html>
