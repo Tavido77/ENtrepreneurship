@@ -1,4 +1,14 @@
 <?php
+// Start the session
+session_start();
+
+// Check if the user is logged in and has the admin role
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    // Redirect to the home page if not authorized
+    header("Location: index.php");
+    exit;
+}
+
 // Include the database connection
 include 'db_connect.php';
 
@@ -64,10 +74,14 @@ if ($result && $result->num_rows > 0) {
       <ul>
         <li><a href="index.php">Home</a></li>
         <li><a href="services.php">Services</a></li>
-        <li><a href="booking.php">Booking</a></li>
+        <?php if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'): ?>
+          <li><a href="booking.php">Booking</a></li>
+        <?php endif; ?>
         <li><a href="appointments.php">Appointments</a></li>
         <li><a href="contact.php">Contact</a></li>
-        <li><a href="dashboard.php" class="active">Dashboard</a></li>
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+          <li><a href="dashboard.php" class="active">Dashboard</a></li>
+        <?php endif; ?>
       </ul>
     </nav>
     <button class="sidebar-cta" aria-label="Open booking">Book Appointment</button>

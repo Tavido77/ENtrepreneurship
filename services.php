@@ -1,15 +1,37 @@
 <?php
 // Include the database connection
 include 'db_connect.php';
+require_once 'db_queries.php';
+
+$dbQueries = new DBQueries($conn);
 
 // Fetch services from the database
 $services = [];
-$sql = "SELECT id, name, description, price, category FROM services ORDER BY price ASC";
+$sql = "SELECT id, name, description, price, category, duration FROM services ORDER BY price ASC";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $services[] = $row;
+    }
+}
+
+// Handle service booking
+if (isset($_POST['book_service_id'])) {
+    $serviceId = $_POST['book_service_id'];
+
+    // Assuming $userId is the logged-in user's ID
+    $userId = $_SESSION['user_id'] ?? null;
+
+    if ($userId) {
+        if ($dbQueries->bookService($serviceId, $userId)) {
+            header("Location: booking.php");
+            exit;
+        } else {
+            echo "Error: Unable to book the service.";
+        }
+    } else {
+        echo "Error: User not logged in.";
     }
 }
 ?>
@@ -34,10 +56,14 @@ if ($result && $result->num_rows > 0) {
       <ul>
         <li><a href="index.php">Home</a></li>
         <li><a href="services.php" class="active">Services</a></li>
-        <li><a href="booking.php">Booking</a></li>
+        <?php if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'): ?>
+          <li><a href="booking.php">Booking</a></li>
+        <?php endif; ?>
         <li><a href="appointments.php">Appointments</a></li>
         <li><a href="contact.php">Contact</a></li>
-        <li><a href="dashboard.php">Dashboard</a></li>
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+          <li><a href="dashboard.php">Dashboard</a></li>
+        <?php endif; ?>
       </ul>
     </nav>
     <button class="sidebar-cta" aria-label="Open booking">Book Appointment</button>
@@ -101,12 +127,26 @@ if ($result && $result->num_rows > 0) {
               <p><?php echo htmlspecialchars($service['description']); ?></p>
               <p><strong>Price:</strong> $<?php echo number_format($service['price'], 2); ?></p>
               <p><strong>Category:</strong> <?php echo htmlspecialchars($service['category']); ?></p>
+              <p><strong>Duration:</strong> <?php echo htmlspecialchars($service['duration']); ?> min</p>
             </div>
           <?php endforeach; ?>
         <?php else: ?>
           <p>No services available at the moment.</p>
         <?php endif; ?>
       </section>
+
+      <div class="services-list">
+        <?php foreach ($services as $service): ?>
+          <div class="service-card">
+            <strong><?php echo htmlspecialchars($service['name']); ?></strong>
+            <p><?php echo htmlspecialchars($service['duration']); ?> min • $<?php echo number_format($service['price'], 2); ?></p>
+            <form method="POST" action="">
+              <input type="hidden" name="book_service_id" value="<?php echo $service['id']; ?>">
+              <button type="submit" class="book-now-btn">Book Now</button>
+            </form>
+          </div>
+        <?php endforeach; ?>
+      </div>
     </main>
   </div>
 

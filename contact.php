@@ -30,10 +30,14 @@ if ($result && $row = $result->fetch_assoc()) {
       <ul>
         <li><a href="index.php">Home</a></li>
         <li><a href="services.php">Services</a></li>
-        <li><a href="booking.php">Booking</a></li>
+        <?php if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin'): ?>
+          <li><a href="booking.php">Booking</a></li>
+        <?php endif; ?>
         <li><a href="appointments.php">Appointments</a></li>
         <li><a href="contact.php" class="active">Contact</a></li>
-        <li><a href="dashboard.php">Dashboard</a></li>
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+          <li><a href="dashboard.php">Dashboard</a></li>
+        <?php endif; ?>
       </ul>
     </nav>
     <button class="sidebar-cta" aria-label="Open booking">Book Appointment</button>
